@@ -1,168 +1,113 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import CalcNumberService from './service/CalcNumberService';
-import { StackNavigator } from '@react-navigation/native';
 
-const numberStyles = StyleSheet.create({
-  body: {
-    width: 320,
-    height: 506,
-  },
+global.calc.setNumberStyles = () => {
+  const height = global.app.getContentHeight() - 20 - 50 - 20; // 計算結果等の表示欄の高さを引いた分
+  const buttonHeight1 = height * 3 / 23;
+  const buttonHeight2 = height * 4 / 23;
+  const remainder = height - buttonHeight1 - buttonHeight2 * 5;
+  const buttonHeight3 = buttonHeight2 + remainder;
+  const size = global.app.size;
+  global.calc.numberStyles = StyleSheet.create({
+    body: {
+      width: size(320),
+      height: global.app.viewHeight,
+    },
 
-  divLog1: {
-    width: 320,
-    height: 20,
-    lineHeight: 20,
-//    textAlign: 'left', // textAlignはText側で指定する
-    backgroundColor: '#E0E0E0',
-  },
-  spanLog1: {
-    textAlign: 'left', // textAlignはText側で指定する
-    fontSize: 17,
-    color: '#000000',
-  },
-  divLog2: {
-    width: 320,
-    height: 50,
-    lineHeight: 50,
-//    textAlign: 'right', // textAlignはText側で指定する
-    backgroundColor: '#E0E0E0',
-  },
-  spanLog2: {
-    textAlign: 'right', // textAlignはText側で指定する
-    fontSize: 29,
-    color: '#000000',
-  },
-  spanLog2Italic: {
-    fontSize: 29,
-    fontStyle: 'italic',
-    color: '#000000',
-  },
-  divRow: {
-//    display: 'flex',
-    flexDirection: 'row', // React Nativeで要素を横並びにする方法
-  },
+    divLog1: {
+      width: size(320),
+      height: size(20),
+      lineHeight: size(20),
+//      textAlign: 'left', // textAlignはText側で指定する
+      backgroundColor: '#E0E0E0',
+    },
+    spanLog1: {
+      textAlign: 'left', // textAlignはText側で指定する
+      fontSize: size(17),
+      color: '#000000',
+    },
+    divLog2: {
+      width: size(320),
+      height: size(50),
+      lineHeight: size(50),
+//      textAlign: 'right', // textAlignはText側で指定する
+      backgroundColor: '#E0E0E0',
+    },
+    spanLog2: {
+      textAlign: 'right', // textAlignはText側で指定する
+      fontSize: size(29),
+      color: '#000000',
+    },
+    spanLog2Italic: {
+      textAlign: 'right', // textAlignはText側で指定する
+      fontSize: size(29),
+      fontStyle: 'italic',
+      color: '#000000',
+    },
+    divRow: {
+//      display: 'flex',
+      flexDirection: 'row', // React Nativeで要素を横並びにする方法
+    },
 
-  button1: {
-    width: 80,
-    height: 54,
-    lineHeight: 54,
-//    textAlign: 'center',
-    alignItems: 'center', // 横方向
-//    verticalAlign: 'middle',
-    justifyContent: 'center', // 縦方向
-  },
-  button2: {
-    width: 80,
-    height: 72,
-    lineHeight: 72,
-//    textAlign: 'center',
-    alignItems: 'center', // 横方向
-//    verticalAlign: 'middle',
-    justifyContent: 'center', // 縦方向
-  },
-  button3: {
-    width: 80,
-    height: 74,
-    lineHeight: 74,
-//    textAlign: 'center',
-    alignItems: 'center', // 横方向
-//    verticalAlign: 'middle',
-    justifyContent: 'center', // 縦方向
-  },
+    button1: {
+      width: size(80),
+      height: size(buttonHeight1),
+      lineHeight: size(buttonHeight1),
+//      textAlign: 'center',
+      alignItems: 'center', // 横方向
+//      verticalAlign: 'middle',
+      justifyContent: 'center', // 縦方向
+    },
+    button2: {
+      width: size(80),
+      height: size(buttonHeight2),
+      lineHeight: size(buttonHeight2),
+//      textAlign: 'center',
+      alignItems: 'center', // 横方向
+//      verticalAlign: 'middle',
+      justifyContent: 'center', // 縦方向
+    },
+    button3: {
+      width: size(80),
+      height: size(buttonHeight3),
+      lineHeight: size(buttonHeight3),
+//      textAlign: 'center',
+      alignItems: 'center', // 横方向
+//      verticalAlign: 'middle',
+      justifyContent: 'center', // 縦方向
+    },
 
-  divColorBlue: {
-    backgroundColor: '#C0C0FF',
-  },
-  divColorRed: {
-    backgroundColor: '#FFA0A0',
-  },
-  divColorWhite: {
-    backgroundColor: '#FFFFFF',
-  },
+    divColorBlue: {
+      backgroundColor: '#C0C0FF',
+    },
+    divColorRed: {
+      backgroundColor: '#FFA0A0',
+    },
+    divColorWhite: {
+      backgroundColor: '#FFFFFF',
+    },
 
-  spanColorBlack: {
-    color: '#000000',
-  },
-  spanColorWhite: {
-    color: '#FFFFFF',
-  },
-  spanColorRed: {
-    color: '#FF8080',
-  },
+    spanColorBlack: {
+      color: '#000000',
+    },
+    spanColorWhite: {
+      color: '#FFFFFF',
+    },
+    spanColorRed: {
+      color: '#FF8080',
+    },
 
-  spanFont25: {
-    fontSize: 25,
-  },
-  spanFont32: {
-    fontSize: 32,
-  },
-  spanFont40: {
-    fontSize: 40,
-  },
-});
-
-class MyCalcNumberService extends CalcNumberService {
-  initWithComponent( componentA, componentB ){
-    this.componentA = componentA;
-    this.componentB = componentB;
-
-    super.init();
-  }
-  init(){
-    super.init();
-  }
-
-  setDispError( type ){
-    if( type == global.calc.errorTypeDivideByZero ){
-      this.componentA.setDispStr( "Divide by zero" );
-    } else if( type == global.calc.errorTypePositiveInfinity ){
-      this.componentA.setDispStr( "Infinity" );
-    } else if( type == global.calc.errorTypeNegativeInfinity ){
-      this.componentA.setDispStr( "-Infinity" );
-    } else if( type == global.calc.errorTypeNotANumber ){
-      this.componentA.setDispStr( "NaN" );
-    }
-  }
-  setDispResult( value ){
-    this.componentA.setDispStr( this.valueToString( value, 15 ) );
-  }
-  setDispEntry( entry ){
-    this.componentA.setDispStr( entry );
-  }
-  clearDispLog(){
-    this.componentA.setDispLog( "" );
-  }
-  setDispLog( value, opType ){
-    if( opType == global.calc.opTypeDiv ){
-      this.componentA.setDispLog( this.valueToString( value, 10 ) + " ÷" );
-    }
-    if( opType == global.calc.opTypeMul ){
-      this.componentA.setDispLog( this.valueToString( value, 10 ) + " ×" );
-    }
-    if( opType == global.calc.opTypeSub ){
-      this.componentA.setDispLog( this.valueToString( value, 10 ) + " -" );
-    }
-    if( opType == global.calc.opTypeAdd ){
-      this.componentA.setDispLog( this.valueToString( value, 10 ) + " +" );
-    }
-  }
-  addDispLog( value ){
-    this.componentA.setDispLog( this.componentA.state.dispLog + " " + this.valueToString( value, 10 ) + " =" );
-  }
-  setDispAnswer( value ){
-    this.componentA.setDispAnswer( this.valueToString( value, 10 ) );
-  }
-  setDispMemory( value ){
-    this.componentA.setDispMemory( this.valueToString( value, 10 ) );
-  }
-  memoryRecalled( flag ){
-    this.componentA.setMrcButtonText( flag ? "MC" : "MR" );
-  }
-  errorChanged( flag ){
-    this.componentB.setErrorFlag( flag );
-  }
-}
+    spanFont25: {
+      fontSize: size(25),
+    },
+    spanFont32: {
+      fontSize: size(32),
+    },
+    spanFont40: {
+      fontSize: size(40),
+    },
+  });
+};
 
 class MyNumberA extends React.Component {
   constructor(props) {
@@ -252,27 +197,27 @@ class MyNumberA extends React.Component {
 
     return (
       <View>
-        <TouchableOpacity style={numberStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
-          <Text style={numberStyles.spanLog1}>{this.state.dispLog}</Text>
+        <TouchableOpacity style={global.calc.numberStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
+          <Text style={global.calc.numberStyles.spanLog1}>{this.state.dispLog}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={numberStyles.divLog2} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
-          <Text style={global.calc.italicFlag ? numberStyles.spanLog2Italic : numberStyles.spanLog2}>{dispStr}</Text>
+        <TouchableOpacity style={global.calc.numberStyles.divLog2} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
+          <Text style={global.calc.italicFlag ? global.calc.numberStyles.spanLog2Italic : global.calc.numberStyles.spanLog2}>{dispStr}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={numberStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
-          <Text style={numberStyles.spanLog1}>A = {this.state.dispAnswer}&nbsp;&nbsp;M = {this.state.dispMemory}</Text>
+        <TouchableOpacity style={global.calc.numberStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
+          <Text style={global.calc.numberStyles.spanLog1}>A = {this.state.dispAnswer}&nbsp;&nbsp;M = {this.state.dispMemory}</Text>
         </TouchableOpacity>
-        <View style={numberStyles.divRow}>
-          <TouchableOpacity style={[numberStyles.button1, numberStyles.divColorBlue]} onPress={this.onButtonMAdd}>
-            <Text style={[numberStyles.spanFont25, numberStyles.spanColorBlack]}>M+</Text>
+        <View style={global.calc.numberStyles.divRow}>
+          <TouchableOpacity style={[global.calc.numberStyles.button1, global.calc.numberStyles.divColorBlue]} onPress={this.onButtonMAdd}>
+            <Text style={[global.calc.numberStyles.spanFont25, global.calc.numberStyles.spanColorBlack]}>M+</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button1, numberStyles.divColorBlue]} onPress={this.onButtonMSub}>
-            <Text style={[numberStyles.spanFont25, numberStyles.spanColorBlack]}>M-</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button1, global.calc.numberStyles.divColorBlue]} onPress={this.onButtonMSub}>
+            <Text style={[global.calc.numberStyles.spanFont25, global.calc.numberStyles.spanColorBlack]}>M-</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button1, numberStyles.divColorBlue]} onPress={this.onButtonMRC}>
-            <Text style={[numberStyles.spanFont25, global.calc.memoryRecalled ? numberStyles.spanColorRed : numberStyles.spanColorBlack]}>{this.state.mrcButtonText}</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button1, global.calc.numberStyles.divColorBlue]} onPress={this.onButtonMRC}>
+            <Text style={[global.calc.numberStyles.spanFont25, global.calc.memoryRecalled ? global.calc.numberStyles.spanColorRed : global.calc.numberStyles.spanColorBlack]}>{this.state.mrcButtonText}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button1, numberStyles.divColorRed]} onPress={this.onButtonFunction}>
-            <Text style={[numberStyles.spanFont25, numberStyles.spanColorWhite]}>FNC</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button1, global.calc.numberStyles.divColorRed]} onPress={this.onButtonFunction}>
+            <Text style={[global.calc.numberStyles.spanFont25, global.calc.numberStyles.spanColorWhite]}>FNC</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -340,23 +285,23 @@ class MyNumberB extends React.Component {
   render() {
     console.log("MyNumberB render");
 
-    const classNameDivCe = [ numberStyles.button2, global.calc.errorFlag ? numberStyles.divColorRed : numberStyles.divColorWhite ];
-    const classNameSpanCe = [ numberStyles.spanFont32, global.calc.errorFlag ? numberStyles.spanColorWhite : numberStyles.spanColorRed ];
+    const classNameDivCe = [ global.calc.numberStyles.button2, global.calc.errorFlag ? global.calc.numberStyles.divColorRed : global.calc.numberStyles.divColorWhite ];
+    const classNameSpanCe = [ global.calc.numberStyles.spanFont32, global.calc.errorFlag ? global.calc.numberStyles.spanColorWhite : global.calc.numberStyles.spanColorRed ];
 
     return (
       <View>
-        <View style={numberStyles.divRow}>
+        <View style={global.calc.numberStyles.divRow}>
           <TouchableOpacity style={classNameDivCe} onPress={this.onButtonCE}>
             <Text style={classNameSpanCe}>CE</Text>
           </TouchableOpacity>
           <TouchableOpacity style={classNameDivCe} onPress={this.onButtonC}>
             <Text style={classNameSpanCe}>C</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButtonDEL}>
-            <Text style={[numberStyles.spanFont32, numberStyles.spanColorBlack]}>DEL</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButtonDEL}>
+            <Text style={[global.calc.numberStyles.spanFont32, global.calc.numberStyles.spanColorBlack]}>DEL</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButtonDiv}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>÷</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButtonDiv}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>÷</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -455,60 +400,60 @@ class MyNumberC extends React.Component {
     console.log("MyNumberC render");
     return (
       <View>
-        <View style={numberStyles.divRow}>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButton7}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>7</Text>
+        <View style={global.calc.numberStyles.divRow}>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButton7}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>7</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButton8}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>8</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButton8}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>8</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButton9}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>9</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButton9}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>9</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButtonMul}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>×</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={numberStyles.divRow}>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButton4}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>4</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButton5}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>5</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButton6}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>6</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButtonSub}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>-</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButtonMul}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>×</Text>
           </TouchableOpacity>
         </View>
-        <View style={numberStyles.divRow}>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButton1}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>1</Text>
+        <View style={global.calc.numberStyles.divRow}>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButton4}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>4</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButton2}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>2</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButton5}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>5</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButton3}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>3</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButton6}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>6</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button2, numberStyles.divColorWhite]} onPress={this.onButtonAdd}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>+</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButtonSub}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>-</Text>
           </TouchableOpacity>
         </View>
-        <View style={numberStyles.divRow}>
-          <TouchableOpacity style={[numberStyles.button3, numberStyles.divColorWhite]} onPress={this.onButtonNegative}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>+/-</Text>
+        <View style={global.calc.numberStyles.divRow}>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButton1}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>1</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button3, numberStyles.divColorWhite]} onPress={this.onButton0}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>0</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButton2}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>2</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button3, numberStyles.divColorWhite]} onPress={this.onButtonPoint}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorBlack]}>.</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButton3}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>3</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[numberStyles.button3, numberStyles.divColorWhite]} onPress={this.onButtonEqual}>
-            <Text style={[numberStyles.spanFont40, numberStyles.spanColorRed]}>=</Text>
+          <TouchableOpacity style={[global.calc.numberStyles.button2, global.calc.numberStyles.divColorWhite]} onPress={this.onButtonAdd}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>+</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={global.calc.numberStyles.divRow}>
+          <TouchableOpacity style={[global.calc.numberStyles.button3, global.calc.numberStyles.divColorWhite]} onPress={this.onButtonNegative}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>+/-</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[global.calc.numberStyles.button3, global.calc.numberStyles.divColorWhite]} onPress={this.onButton0}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>0</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[global.calc.numberStyles.button3, global.calc.numberStyles.divColorWhite]} onPress={this.onButtonPoint}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorBlack]}>.</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[global.calc.numberStyles.button3, global.calc.numberStyles.divColorWhite]} onPress={this.onButtonEqual}>
+            <Text style={[global.calc.numberStyles.spanFont40, global.calc.numberStyles.spanColorRed]}>=</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -529,9 +474,6 @@ class MyNumber extends React.Component {
     console.log("MyNumber constructor");
     super(props);
 
-    // サービス
-    global.calcNumberService = new MyCalcNumberService();
-
     this.setMyNumberA = this.setMyNumberA.bind(this);
     this.setMyNumberB = this.setMyNumberB.bind(this);
   }
@@ -546,7 +488,7 @@ class MyNumber extends React.Component {
   render() {
     console.log("MyNumber render");
     return (
-      <View style={numberStyles.body}>
+      <View style={global.calc.numberStyles.body}>
         <MyNumberA navigation={this.props.navigation} setMyNumberA={this.setMyNumberA} />
         <MyNumberB navigation={this.props.navigation} setMyNumberB={this.setMyNumberB} />
         <MyNumberC />

@@ -1,3 +1,27 @@
+global.app = {};
+
+// アプリの仮想幅
+global.app.contentWidth = 320;
+
+// viewサイズ
+global.app.viewWidth = 0;
+global.app.viewHeight = 0;
+
+// アプリ仮想サイズをviewサイズに変換するための係数
+global.app.scale = () => {
+  return global.app.viewWidth / global.app.contentWidth;
+};
+
+// アプリ仮想サイズをviewサイズに変換する
+global.app.size = (value) => {
+  return value * global.app.scale();
+};
+
+// アプリの仮想の高さを取得する
+global.app.getContentHeight = () => {
+  return global.app.viewHeight / global.app.scale();
+};
+
 global.calc = {};
 
 global.calc.modeNumber   = 0;

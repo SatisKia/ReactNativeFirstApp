@@ -3,53 +3,56 @@ import { RadioButton } from 'react-native-paper';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 
-const optionStyles = StyleSheet.create({
-  body: {
-    width: 320,
-    height: 506,
-    textAlign: 'left',
-  },
+global.calc.setOptionStyles = () => {
+  const size = global.app.size;
+  global.calc.optionStyles = StyleSheet.create({
+    body: {
+      width: size(320),
+      height: global.app.viewHeight,
+      textAlign: 'left',
+    },
 
-  divReturn: {
-    width: 320,
-    height: 40,
-    lineHeight: 40,
-//    textAlign: 'center', // textAlignはText側で指定する
-//    verticalAlign: 'middle',
-    justifyContent: 'center', // 縦方向
-    backgroundColor: '#2196F3',
-  },
-  spanReturn: {
-    textAlign: 'center', // textAlignはText側で指定する
-    fontSize: 16,
-    color: '#FFFFFF',
-  },
-  divOption: {
-    width: 300,
-    padding: 10,
-  },
-  spanOption: {
-    fontSize: 15,
-    color: '#000000',
-  },
-  divSpace: {
-    height: 10,
-  },
+    divReturn: {
+      width: size(320),
+      height: size(40),
+      lineHeight: size(40),
+//      textAlign: 'center', // textAlignはText側で指定する
+//      verticalAlign: 'middle',
+      justifyContent: 'center', // 縦方向
+      backgroundColor: '#2196F3',
+    },
+    spanReturn: {
+      textAlign: 'center', // textAlignはText側で指定する
+      fontSize: size(16),
+      color: '#FFFFFF',
+    },
+    divOption: {
+      width: size(300),
+      padding: size(10),
+    },
+    spanOption: {
+      fontSize: size(15),
+      color: '#000000',
+    },
+    divSpace: {
+      height: size(10),
+    },
 
-  checkbox1: {
-    borderWidth: 0,
-    backgroundColor: '#FFFFFF',
-  },
-  checkbox1Label: {
-    fontSize: 15,
-  },
+    checkbox1: {
+      borderWidth: 0,
+      backgroundColor: '#FFFFFF',
+    },
+    checkbox1Label: {
+      fontSize: size(15),
+    },
 
-  radio1Label: {
-    fontSize: 15,
-    textAlign: 'left',
-    paddingLeft: 5,
-  },
-});
+    radio1Label: {
+      fontSize: size(15),
+      textAlign: 'left',
+      paddingLeft: size(5),
+    },
+  });
+};
 
 class MyOption extends React.Component {
   constructor(props) {
@@ -119,21 +122,29 @@ class MyOption extends React.Component {
     const { italicFlag, separatorType } = this.state;
 
     return (
-      <View style={optionStyles.body}>
-        <TouchableOpacity style={optionStyles.divReturn} onPress={() => { this.props.navigation.navigate(this.returnScreen); }}>
-          <Text style={optionStyles.spanReturn}>{strBack}</Text>
+      <View style={global.calc.optionStyles.body}>
+        <TouchableOpacity style={global.calc.optionStyles.divReturn} onPress={() => {
+          if (this.returnScreen == 'Number') {
+            global.calcNumberService.init();
+          }
+          if (this.returnScreen == 'Function') {
+            global.calcFunctionService.init();
+          }
+          this.props.navigation.navigate(this.returnScreen);
+        }}>
+          <Text style={global.calc.optionStyles.spanReturn}>{strBack}</Text>
         </TouchableOpacity>
-        <View style={optionStyles.divOption}>
+        <View style={global.calc.optionStyles.divOption}>
           <CheckBox
             title={strItalic}
             checked={italicFlag}
             onPress={this.handleChangeItalic}
-            containerStyle={optionStyles.checkbox1}
-            textStyle={optionStyles.checkbox1Label}
+            containerStyle={global.calc.optionStyles.checkbox1}
+            textStyle={global.calc.optionStyles.checkbox1Label}
           />
-          <View style={optionStyles.divSpace}></View>
+          <View style={global.calc.optionStyles.divSpace}></View>
           <View>
-            <Text style={optionStyles.spanOption}>{strSeparator}:</Text>
+            <Text style={global.calc.optionStyles.spanOption}>{strSeparator}:</Text>
           </View>
           <RadioButton.Group>
             <RadioButton.Item
@@ -141,7 +152,7 @@ class MyOption extends React.Component {
               label={strSeparatorNone}
               status={separatorType === global.calc.separatorTypeNone ? 'checked' : 'unchecked'}
               onPress={this.handleChangeSeparatorTypeNone}
-              labelStyle={optionStyles.radio1Label}
+              labelStyle={global.calc.optionStyles.radio1Label}
               position='leading'
             />
             <RadioButton.Item
@@ -149,7 +160,7 @@ class MyOption extends React.Component {
               label={strSeparatorUpper}
               status={separatorType === global.calc.separatorTypeDash ? 'checked' : 'unchecked'}
               onPress={this.handleChangeSeparatorTypeDash}
-              labelStyle={optionStyles.radio1Label}
+              labelStyle={global.calc.optionStyles.radio1Label}
               position='leading'
             />
             <RadioButton.Item
@@ -157,7 +168,7 @@ class MyOption extends React.Component {
               label={strSeparatorLower}
               status={separatorType === global.calc.separatorTypeComma ? 'checked' : 'unchecked'}
               onPress={this.handleChangeSeparatorTypeComma}
-              labelStyle={optionStyles.radio1Label}
+              labelStyle={global.calc.optionStyles.radio1Label}
               position='leading'
             />
           </RadioButton.Group>

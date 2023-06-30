@@ -1,163 +1,119 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import CalcFunctionService from './service/CalcFunctionService';
 
-const functionStyles = StyleSheet.create({
-  body: {
-    width: 320,
-    height: 506,
-  },
+global.calc.setFunctionStyles = () => {
+  const height = global.app.getContentHeight() - 20 - 50 - 20; // 計算結果等の表示欄の高さを引いた分
+  const buttonHeight1 = height * 3 / 23;
+  const buttonHeight2 = height * 4 / 23;
+  const remainder = height - buttonHeight1 - buttonHeight2 * 5;
+  const buttonHeight3 = buttonHeight2 + remainder;
+  const size = global.app.size;
+  global.calc.functionStyles = StyleSheet.create({
+    body: {
+      width: size(320),
+      height: global.app.viewHeight,
+    },
 
-  divLog1: {
-    width: 320,
-    height: 20,
-    lineHeight: 20,
-//    textAlign: 'left', // textAlignはText側で指定する
-    backgroundColor: '#E0E0E0',
-  },
-  spanLog1: {
-    textAlign: 'left', // textAlignはText側で指定する
-    fontSize: 17,
-    color: '#000000',
-  },
-  divLog2: {
-    width: 320,
-    height: 50,
-    lineHeight: 50,
-//    textAlign: 'right', // textAlignはText側で指定する
-    backgroundColor: '#E0E0E0',
-  },
-  spanLog2: {
-    textAlign: 'right', // textAlignはText側で指定する
-    fontSize: 29,
-    color: '#000000',
-  },
-  spanLog2Italic: {
-    fontSize: 29,
-    fontStyle: 'italic',
-    color: '#000000',
-  },
-  divRow: {
-//    display: 'flex',
-    flexDirection: 'row', // React Nativeで要素を横並びにする方法
-  },
+    divLog1: {
+      width: size(320),
+      height: size(20),
+      lineHeight: size(20),
+//      textAlign: 'left', // textAlignはText側で指定する
+      backgroundColor: '#E0E0E0',
+    },
+    spanLog1: {
+      textAlign: 'left', // textAlignはText側で指定する
+      fontSize: size(17),
+      color: '#000000',
+    },
+    divLog2: {
+      width: size(320),
+      height: size(50),
+      lineHeight: size(50),
+//      textAlign: 'right', // textAlignはText側で指定する
+      backgroundColor: '#E0E0E0',
+    },
+    spanLog2: {
+      textAlign: 'right', // textAlignはText側で指定する
+      fontSize: size(29),
+      color: '#000000',
+    },
+    spanLog2Italic: {
+      textAlign: 'right', // textAlignはText側で指定する
+      fontSize: size(29),
+      fontStyle: 'italic',
+      color: '#000000',
+    },
+    divRow: {
+//      display: 'flex',
+      flexDirection: 'row', // React Nativeで要素を横並びにする方法
+    },
 
-  button1: {
-    width: 80,
-    height: 54,
-    lineHeight: 54,
-//    textAlign: 'center',
-    alignItems: 'center', // 横方向
-//    verticalAlign: 'middle',
-    justifyContent: 'center', // 縦方向
-  },
-  button2: {
-    width: 80,
-    height: 72,
-    lineHeight: 72,
-//    textAlign: 'center',
-    alignItems: 'center', // 横方向
-//    verticalAlign: 'middle',
-    justifyContent: 'center', // 縦方向
-  },
-  button3: {
-    width: 80,
-    height: 74,
-    lineHeight: 74,
-//    textAlign: 'center',
-    alignItems: 'center', // 横方向
-//    verticalAlign: 'middle',
-    justifyContent: 'center', // 縦方向
-  },
-  func1: {
-    width: 107,
-  },
-  func2: {
-    width: 106,
-  },
+    button1: {
+      width: size(80),
+      height: size(buttonHeight1),
+      lineHeight: size(buttonHeight1),
+//      textAlign: 'center',
+      alignItems: 'center', // 横方向
+//      verticalAlign: 'middle',
+      justifyContent: 'center', // 縦方向
+    },
+    button2: {
+      width: size(80),
+      height: size(buttonHeight2),
+      lineHeight: size(buttonHeight2),
+//      textAlign: 'center',
+      alignItems: 'center', // 横方向
+//      verticalAlign: 'middle',
+      justifyContent: 'center', // 縦方向
+    },
+    button3: {
+      width: size(80),
+      height: size(buttonHeight3),
+      lineHeight: size(buttonHeight3),
+//      textAlign: 'center',
+      alignItems: 'center', // 横方向
+//      verticalAlign: 'middle',
+      justifyContent: 'center', // 縦方向
+    },
+    func1: {
+      width: size(107),
+    },
+    func2: {
+      width: size(106),
+    },
 
-  divColorBlue: {
-    backgroundColor: '#C0C0FF',
-  },
-  divColorRed: {
-    backgroundColor: '#FFA0A0',
-  },
-  divColorWhite: {
-    backgroundColor: '#FFFFFF',
-  },
+    divColorBlue: {
+      backgroundColor: '#C0C0FF',
+    },
+    divColorRed: {
+      backgroundColor: '#FFA0A0',
+    },
+    divColorWhite: {
+      backgroundColor: '#FFFFFF',
+    },
 
-  spanColorBlack: {
-    color: '#000000',
-  },
-  spanColorWhite: {
-    color: '#FFFFFF',
-  },
-  spanColorRed: {
-    color: '#FF8080',
-  },
+    spanColorBlack: {
+      color: '#000000',
+    },
+    spanColorWhite: {
+      color: '#FFFFFF',
+    },
+    spanColorRed: {
+      color: '#FF8080',
+    },
 
-  spanFont25: {
-    fontSize: 25,
-  },
-  spanFont32: {
-    fontSize: 32,
-  },
-  spanFont40: {
-    fontSize: 40,
-  },
-});
-
-class MyCalcFunctionService extends CalcFunctionService {
-  initWithComponent( componentA, componentB ){
-    this.componentA = componentA;
-    this.componentB = componentB;
-
-    super.init();
-  }
-  init(){
-    super.init();
-  }
-
-  setDispError( type ){
-    if( type == global.calc.errorTypeDivideByZero ){
-      this.componentA.setDispStr( "Divide by zero" );
-    } else if( type == global.calc.errorTypePositiveInfinity ){
-      this.componentA.setDispStr( "Infinity" );
-    } else if( type == global.calc.errorTypeNegativeInfinity ){
-      this.componentA.setDispStr( "-Infinity" );
-    } else if( type == global.calc.errorTypeNotANumber ){
-      this.componentA.setDispStr( "NaN" );
-    }
-  }
-  setDispResult( value ){
-    this.componentA.setDispStr( this.valueToString( value, 15 ) );
-  }
-  setDispEntry( entry ){
-    this.componentA.setDispStr( entry );
-  }
-  setDispMemory( value ){
-    this.componentA.setDispMemory( this.valueToString( value, 10 ) );
-  }
-  memoryRecalled( flag ){
-    this.componentA.setMrcButtonText( flag ? "MC" : "MR" );
-  }
-  errorChanged( flag ){
-    this.componentB.setErrorFlag( flag );
-  }
-
-  angleChanged( type ){
-    if( type == global.calc.angleTypeRad ){
-      this.componentA.setDispAngle( "RAD" );
-      this.componentB.setAngleButtonText( "DEG" );
-    } else if( type == global.calc.angleTypeDeg ){
-      this.componentA.setDispAngle( "DEG" );
-      this.componentB.setAngleButtonText( "GRAD" );
-    } else if( type == global.calc.angleTypeGrad ){
-      this.componentA.setDispAngle( "GRAD" );
-      this.componentB.setAngleButtonText( "RAD" );
-    }
-  }
-}
+    spanFont25: {
+      fontSize: size(25),
+    },
+    spanFont32: {
+      fontSize: size(32),
+    },
+    spanFont40: {
+      fontSize: size(40),
+    },
+  });
+};
 
 class MyFunctionA extends React.Component {
   constructor(props) {
@@ -242,27 +198,27 @@ class MyFunctionA extends React.Component {
 
     return (
       <View>
-        <TouchableOpacity style={functionStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
-          <Text style={functionStyles.spanLog1}>{this.state.dispAngle}</Text>
+        <TouchableOpacity style={global.calc.functionStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
+          <Text style={global.calc.functionStyles.spanLog1}>{this.state.dispAngle}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={functionStyles.divLog2} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
-          <Text style={global.calc.italicFlag ? functionStyles.spanLog2Italic : functionStyles.spanLog2}>{dispStr}</Text>
+        <TouchableOpacity style={global.calc.functionStyles.divLog2} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
+          <Text style={global.calc.italicFlag ? global.calc.functionStyles.spanLog2Italic : global.calc.functionStyles.spanLog2}>{dispStr}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={functionStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
-          <Text style={functionStyles.spanLog1}>M = {this.state.dispMemory}</Text>
+        <TouchableOpacity style={global.calc.functionStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
+          <Text style={global.calc.functionStyles.spanLog1}>M = {this.state.dispMemory}</Text>
         </TouchableOpacity>
-        <View style={functionStyles.divRow}>
-          <TouchableOpacity style={[functionStyles.button1, functionStyles.divColorBlue]} onPress={this.onButtonMAdd}>
-            <Text style={[functionStyles.spanFont25, functionStyles.spanColorBlack]}>M+</Text>
+        <View style={global.calc.functionStyles.divRow}>
+          <TouchableOpacity style={[global.calc.functionStyles.button1, global.calc.functionStyles.divColorBlue]} onPress={this.onButtonMAdd}>
+            <Text style={[global.calc.functionStyles.spanFont25, global.calc.functionStyles.spanColorBlack]}>M+</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button1, functionStyles.divColorBlue]} onPress={this.onButtonMSub}>
-            <Text style={[functionStyles.spanFont25, functionStyles.spanColorBlack]}>M-</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button1, global.calc.functionStyles.divColorBlue]} onPress={this.onButtonMSub}>
+            <Text style={[global.calc.functionStyles.spanFont25, global.calc.functionStyles.spanColorBlack]}>M-</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button1, functionStyles.divColorBlue]} onPress={this.onButtonMRC}>
-            <Text style={[functionStyles.spanFont25, global.calc.memoryRecalled ? functionStyles.spanColorRed : functionStyles.spanColorBlack]}>{this.state.mrcButtonText}</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button1, global.calc.functionStyles.divColorBlue]} onPress={this.onButtonMRC}>
+            <Text style={[global.calc.functionStyles.spanFont25, global.calc.memoryRecalled ? global.calc.functionStyles.spanColorRed : global.calc.functionStyles.spanColorBlack]}>{this.state.mrcButtonText}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button1, functionStyles.divColorRed]} onPress={this.onButtonNumber}>
-            <Text style={[functionStyles.spanFont25, functionStyles.spanColorWhite]}>NUM</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button1, global.calc.functionStyles.divColorRed]} onPress={this.onButtonNumber}>
+            <Text style={[global.calc.functionStyles.spanFont25, global.calc.functionStyles.spanColorWhite]}>NUM</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -344,23 +300,23 @@ class MyFunctionB extends React.Component {
   render() {
     console.log("MyFunctionB render");
 
-    const styleDivCe = [ functionStyles.button2, global.calc.errorFlag ? functionStyles.divColorRed : functionStyles.divColorWhite ];
-    const styleSpanCe = [ functionStyles.spanFont32, global.calc.errorFlag ? functionStyles.spanColorWhite : functionStyles.spanColorRed ];
+    const styleDivCe = [ global.calc.functionStyles.button2, global.calc.errorFlag ? global.calc.functionStyles.divColorRed : global.calc.functionStyles.divColorWhite ];
+    const styleSpanCe = [ global.calc.functionStyles.spanFont32, global.calc.errorFlag ? global.calc.functionStyles.spanColorWhite : global.calc.functionStyles.spanColorRed ];
 
     return (
       <View>
-        <View style={functionStyles.divRow}>
+        <View style={global.calc.functionStyles.divRow}>
           <TouchableOpacity style={styleDivCe} onPress={this.onButtonCE}>
             <Text style={styleSpanCe}>CE</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styleDivCe} onPress={this.onButtonC}>
             <Text style={styleSpanCe}>C</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.divColorWhite]} onPress={this.onButtonAngle}>
-            <Text style={[functionStyles.spanFont25, functionStyles.spanColorBlack]}>{this.state.angleButtonText}</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonAngle}>
+            <Text style={[global.calc.functionStyles.spanFont25, global.calc.functionStyles.spanColorBlack]}>{this.state.angleButtonText}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.divColorWhite]} onPress={this.onButtonSqrt}>
-            <Text style={[functionStyles.spanFont40, functionStyles.spanColorBlack]}>√</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonSqrt}>
+            <Text style={[global.calc.functionStyles.spanFont40, global.calc.functionStyles.spanColorBlack]}>√</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -455,48 +411,48 @@ class MyFunctionC extends React.Component {
     console.log("MyFunctionC render");
     return (
       <View>
-        <View style={functionStyles.divRow}>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.func1, functionStyles.divColorWhite]} onPress={this.onButtonSin}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>sin</Text>
+        <View style={global.calc.functionStyles.divRow}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonSin}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>sin</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.func1, functionStyles.divColorWhite]} onPress={this.onButtonCos}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>cos</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonCos}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>cos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.func2, functionStyles.divColorWhite]} onPress={this.onButtonTan}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>tan</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={functionStyles.divRow}>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.func1, functionStyles.divColorWhite]} onPress={this.onButtonArcSin}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>asin</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.func1, functionStyles.divColorWhite]} onPress={this.onButtonArcCos}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>acos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.func2, functionStyles.divColorWhite]} onPress={this.onButtonArcTan}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>atan</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonTan}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>tan</Text>
           </TouchableOpacity>
         </View>
-        <View style={functionStyles.divRow}>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.func1, functionStyles.divColorWhite]} onPress={this.onButtonLog}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>ln</Text>
+        <View style={global.calc.functionStyles.divRow}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonArcSin}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>asin</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.func1, functionStyles.divColorWhite]} onPress={this.onButtonLog10}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>log</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonArcCos}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>acos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button2, functionStyles.func2, functionStyles.divColorWhite]} onPress={this.onButtonSqr}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>sqr</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonArcTan}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>atan</Text>
           </TouchableOpacity>
         </View>
-        <View style={functionStyles.divRow}>
-          <TouchableOpacity style={[functionStyles.button3, functionStyles.func1, functionStyles.divColorWhite]} onPress={this.onButtonExp}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>exp</Text>
+        <View style={global.calc.functionStyles.divRow}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonLog}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>ln</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button3, functionStyles.func1, functionStyles.divColorWhite]} onPress={this.onButtonExp10}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>exp10</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonLog10}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>log</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[functionStyles.button3, functionStyles.func2, functionStyles.divColorWhite]} onPress={this.onButtonInt}>
-            <Text style={[functionStyles.spanFont32, functionStyles.spanColorBlack]}>int</Text>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonSqr}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>sqr</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={global.calc.functionStyles.divRow}>
+          <TouchableOpacity style={[global.calc.functionStyles.button3, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonExp}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>exp</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[global.calc.functionStyles.button3, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonExp10}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>exp10</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[global.calc.functionStyles.button3, global.calc.functionStyles.func2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonInt}>
+            <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>int</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -517,9 +473,6 @@ class MyFunction extends React.Component {
     console.log("MyFunction constructor");
     super(props);
 
-    // サービス
-    global.calcFunctionService = new MyCalcFunctionService();
-
     this.setMyFunctionA = this.setMyFunctionA.bind(this);
     this.setMyFunctionB = this.setMyFunctionB.bind(this);
   }
@@ -534,7 +487,7 @@ class MyFunction extends React.Component {
   render() {
     console.log("MyFunction render");
     return (
-      <View style={functionStyles.body}>
+      <View style={global.calc.functionStyles.body}>
         <MyFunctionA navigation={this.props.navigation} setMyFunctionA={this.setMyFunctionA} />
         <MyFunctionB navigation={this.props.navigation} setMyFunctionB={this.setMyFunctionB} />
         <MyFunctionC />
