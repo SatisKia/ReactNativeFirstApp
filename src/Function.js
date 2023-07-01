@@ -197,13 +197,13 @@ class MyFunctionA extends React.Component {
 
     return (
       <View>
-        <TouchableOpacity style={global.calc.functionStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
+        <TouchableOpacity activeOpacity={1.0} style={global.calc.functionStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
           <Text style={global.calc.functionStyles.spanLog1}>{this.state.dispAngle}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={global.calc.functionStyles.divLog2} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
+        <TouchableOpacity activeOpacity={1.0} style={global.calc.functionStyles.divLog2} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
           <Text style={global.calc.italicFlag ? global.calc.functionStyles.spanLog2Italic : global.calc.functionStyles.spanLog2}>{dispStr}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={global.calc.functionStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
+        <TouchableOpacity activeOpacity={1.0} style={global.calc.functionStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
           <Text style={global.calc.functionStyles.spanLog1}>M = {this.state.dispMemory}</Text>
         </TouchableOpacity>
         <View style={global.calc.functionStyles.divRow}>

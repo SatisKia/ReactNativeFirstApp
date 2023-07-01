@@ -141,11 +141,42 @@ class MyOption extends React.Component {
             onPress={this.handleChangeItalic}
             containerStyle={global.calc.optionStyles.checkbox1}
             textStyle={global.calc.optionStyles.checkbox1Label}
+            activeOpacity={1.0}
           />
           <View style={global.calc.optionStyles.divSpace}></View>
           <View>
             <Text style={global.calc.optionStyles.spanOption}>{strSeparator}:</Text>
           </View>
+<CheckBox
+  title={strSeparatorNone}
+  checked={separatorType === global.calc.separatorTypeNone}
+  onPress={this.handleChangeSeparatorTypeNone}
+  containerStyle={global.calc.optionStyles.checkbox1}
+  textStyle={global.calc.optionStyles.checkbox1Label}
+  activeOpacity={1.0}
+  checkedIcon='dot-circle-o'
+  uncheckedIcon='circle-o'
+/>
+<CheckBox
+  title={strSeparatorUpper}
+  checked={separatorType === global.calc.separatorTypeDash}
+  onPress={this.handleChangeSeparatorTypeDash}
+  containerStyle={global.calc.optionStyles.checkbox1}
+  textStyle={global.calc.optionStyles.checkbox1Label}
+  activeOpacity={1.0}
+  checkedIcon='dot-circle-o'
+  uncheckedIcon='circle-o'
+/>
+<CheckBox
+  title={strSeparatorLower}
+  checked={separatorType === global.calc.separatorTypeComma}
+  onPress={this.handleChangeSeparatorTypeComma}
+  containerStyle={global.calc.optionStyles.checkbox1}
+  textStyle={global.calc.optionStyles.checkbox1Label}
+  activeOpacity={1.0}
+  checkedIcon='dot-circle-o'
+  uncheckedIcon='circle-o'
+/>
           <RadioButton.Group>
             <RadioButton.Item
               value="first"

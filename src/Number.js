@@ -196,13 +196,13 @@ class MyNumberA extends React.Component {
 
     return (
       <View>
-        <TouchableOpacity style={global.calc.numberStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
+        <TouchableOpacity activeOpacity={1.0} style={global.calc.numberStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
           <Text style={global.calc.numberStyles.spanLog1}>{this.state.dispLog}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={global.calc.numberStyles.divLog2} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
+        <TouchableOpacity activeOpacity={1.0} style={global.calc.numberStyles.divLog2} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
           <Text style={global.calc.italicFlag ? global.calc.numberStyles.spanLog2Italic : global.calc.numberStyles.spanLog2}>{dispStr}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={global.calc.numberStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
+        <TouchableOpacity activeOpacity={1.0} style={global.calc.numberStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Number" }); }}>
           <Text style={global.calc.numberStyles.spanLog1}>A = {this.state.dispAnswer}&nbsp;&nbsp;M = {this.state.dispMemory}</Text>
         </TouchableOpacity>
         <View style={global.calc.numberStyles.divRow}>
