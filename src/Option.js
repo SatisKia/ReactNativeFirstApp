@@ -1,4 +1,5 @@
 import { CheckBox } from 'react-native-elements';
+import { Provider as PaperProvider } from 'react-native-paper';
 import { RadioButton } from 'react-native-paper';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
@@ -122,89 +123,73 @@ class MyOption extends React.Component {
     const { italicFlag, separatorType } = this.state;
 
     return (
-      <View style={global.calc.optionStyles.body}>
-        <TouchableOpacity style={global.calc.optionStyles.divReturn} onPress={() => {
-          if (this.returnScreen == 'Number') {
-            global.calcNumberService.init();
-          }
-          if (this.returnScreen == 'Function') {
-            global.calcFunctionService.init();
-          }
-          this.props.navigation.navigate(this.returnScreen);
-        }}>
-          <Text style={global.calc.optionStyles.spanReturn}>{strBack}</Text>
-        </TouchableOpacity>
-        <View style={global.calc.optionStyles.divOption}>
-          <CheckBox
-            title={strItalic}
-            checked={italicFlag}
-            onPress={this.handleChangeItalic}
-            containerStyle={global.calc.optionStyles.checkbox1}
-            textStyle={global.calc.optionStyles.checkbox1Label}
-            activeOpacity={1.0}
-          />
-          <View style={global.calc.optionStyles.divSpace}></View>
-          <View>
-            <Text style={global.calc.optionStyles.spanOption}>{strSeparator}:</Text>
+      <PaperProvider
+        settings={{
+          rippleEffectEnabled: false
+        }}
+      >
+        <View style={global.calc.optionStyles.body}>
+          <TouchableOpacity style={global.calc.optionStyles.divReturn} onPress={() => {
+            if (this.returnScreen == 'Number') {
+              global.calcNumberService.init();
+            }
+            if (this.returnScreen == 'Function') {
+              global.calcFunctionService.init();
+            }
+            this.props.navigation.navigate(this.returnScreen);
+          }}>
+            <Text style={global.calc.optionStyles.spanReturn}>{strBack}</Text>
+          </TouchableOpacity>
+          <View style={global.calc.optionStyles.divOption}>
+            <CheckBox
+              title={strItalic}
+              checked={italicFlag}
+              onPress={this.handleChangeItalic}
+              containerStyle={global.calc.optionStyles.checkbox1}
+              textStyle={global.calc.optionStyles.checkbox1Label}
+              checkedColor="#2196F3"
+              uncheckedColor="#E0E0E0"
+              activeOpacity={1.0}
+            />
+            <View style={global.calc.optionStyles.divSpace}></View>
+            <View>
+              <Text style={global.calc.optionStyles.spanOption}>{strSeparator}:</Text>
+            </View>
+            <RadioButton.Group>
+              <RadioButton.Item
+                value="first"
+                label={strSeparatorNone}
+                status={separatorType === global.calc.separatorTypeNone ? 'checked' : 'unchecked'}
+                onPress={this.handleChangeSeparatorTypeNone}
+                color="#2196F3"
+                uncheckedColor="#E0E0E0"
+                labelStyle={global.calc.optionStyles.radio1Label}
+                position='leading'
+              />
+              <RadioButton.Item
+                value="second"
+                label={strSeparatorUpper}
+                status={separatorType === global.calc.separatorTypeDash ? 'checked' : 'unchecked'}
+                onPress={this.handleChangeSeparatorTypeDash}
+                color="#2196F3"
+                uncheckedColor="#E0E0E0"
+                labelStyle={global.calc.optionStyles.radio1Label}
+                position='leading'
+              />
+              <RadioButton.Item
+                value="third"
+                label={strSeparatorLower}
+                status={separatorType === global.calc.separatorTypeComma ? 'checked' : 'unchecked'}
+                onPress={this.handleChangeSeparatorTypeComma}
+                color="#2196F3"
+                uncheckedColor="#E0E0E0"
+                labelStyle={global.calc.optionStyles.radio1Label}
+                position='leading'
+              />
+            </RadioButton.Group>
           </View>
-<CheckBox
-  title={strSeparatorNone}
-  checked={separatorType === global.calc.separatorTypeNone}
-  onPress={this.handleChangeSeparatorTypeNone}
-  containerStyle={global.calc.optionStyles.checkbox1}
-  textStyle={global.calc.optionStyles.checkbox1Label}
-  activeOpacity={1.0}
-  checkedIcon='dot-circle-o'
-  uncheckedIcon='circle-o'
-/>
-<CheckBox
-  title={strSeparatorUpper}
-  checked={separatorType === global.calc.separatorTypeDash}
-  onPress={this.handleChangeSeparatorTypeDash}
-  containerStyle={global.calc.optionStyles.checkbox1}
-  textStyle={global.calc.optionStyles.checkbox1Label}
-  activeOpacity={1.0}
-  checkedIcon='dot-circle-o'
-  uncheckedIcon='circle-o'
-/>
-<CheckBox
-  title={strSeparatorLower}
-  checked={separatorType === global.calc.separatorTypeComma}
-  onPress={this.handleChangeSeparatorTypeComma}
-  containerStyle={global.calc.optionStyles.checkbox1}
-  textStyle={global.calc.optionStyles.checkbox1Label}
-  activeOpacity={1.0}
-  checkedIcon='dot-circle-o'
-  uncheckedIcon='circle-o'
-/>
-          <RadioButton.Group>
-            <RadioButton.Item
-              value="first"
-              label={strSeparatorNone}
-              status={separatorType === global.calc.separatorTypeNone ? 'checked' : 'unchecked'}
-              onPress={this.handleChangeSeparatorTypeNone}
-              labelStyle={global.calc.optionStyles.radio1Label}
-              position='leading'
-            />
-            <RadioButton.Item
-              value="second"
-              label={strSeparatorUpper}
-              status={separatorType === global.calc.separatorTypeDash ? 'checked' : 'unchecked'}
-              onPress={this.handleChangeSeparatorTypeDash}
-              labelStyle={global.calc.optionStyles.radio1Label}
-              position='leading'
-            />
-            <RadioButton.Item
-              value="third"
-              label={strSeparatorLower}
-              status={separatorType === global.calc.separatorTypeComma ? 'checked' : 'unchecked'}
-              onPress={this.handleChangeSeparatorTypeComma}
-              labelStyle={global.calc.optionStyles.radio1Label}
-              position='leading'
-            />
-          </RadioButton.Group>
         </View>
-      </View>
+      </PaperProvider>
     );
   }
 
