@@ -18,11 +18,11 @@ global.calc.setNumberStyles = () => {
       width: size(320),
       height: size(20),
       lineHeight: size(20),
-//      textAlign: 'left', // textAlignはText側で指定する
+      //text-align: 'left',
+      alignItems: 'flex-start', // 横方向アライメント
       backgroundColor: '#E0E0E0',
     },
     spanLog1: {
-      textAlign: 'left', // textAlignはText側で指定する
       fontSize: size(17),
       color: '#000000',
     },
@@ -30,22 +30,21 @@ global.calc.setNumberStyles = () => {
       width: size(320),
       height: size(50),
       lineHeight: size(50),
-//      textAlign: 'right', // textAlignはText側で指定する
+      //text-align: 'right',
+      alignItems: 'flex-end', // 横方向アライメント
       backgroundColor: '#E0E0E0',
     },
     spanLog2: {
-      textAlign: 'right', // textAlignはText側で指定する
       fontSize: size(29),
       color: '#000000',
     },
     spanLog2Italic: {
-      textAlign: 'right', // textAlignはText側で指定する
       fontSize: size(29),
       fontStyle: 'italic',
       color: '#000000',
     },
     divRow: {
-//      display: 'flex',
+      //display: 'flex',
       flexDirection: 'row', // React Nativeで要素を横並びにする方法
     },
 
@@ -53,28 +52,28 @@ global.calc.setNumberStyles = () => {
       width: size(80),
       height: size(buttonHeight1),
       lineHeight: size(buttonHeight1),
-//      textAlign: 'center',
-      alignItems: 'center', // 横方向
-//      verticalAlign: 'middle',
-      justifyContent: 'center', // 縦方向
+      //text-align: 'center',
+      alignItems: 'center', // 横方向アライメント
+      //vertical-align: 'middle',
+      justifyContent: 'center', // 縦方向アライメント
     },
     button2: {
       width: size(80),
       height: size(buttonHeight2),
       lineHeight: size(buttonHeight2),
-//      textAlign: 'center',
-      alignItems: 'center', // 横方向
-//      verticalAlign: 'middle',
-      justifyContent: 'center', // 縦方向
+      //text-align: 'center',
+      alignItems: 'center', // 横方向アライメント
+      //vertical-align: 'middle',
+      justifyContent: 'center', // 縦方向アライメント
     },
     button3: {
       width: size(80),
       height: size(buttonHeight3),
       lineHeight: size(buttonHeight3),
-//      textAlign: 'center',
-      alignItems: 'center', // 横方向
-//      verticalAlign: 'middle',
-      justifyContent: 'center', // 縦方向
+      //text-align: 'center',
+      alignItems: 'center', // 横方向アライメント
+      //vertical-align: 'middle',
+      justifyContent: 'center', // 縦方向アライメント
     },
 
     divColorBlue: {

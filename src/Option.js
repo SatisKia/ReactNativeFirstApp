@@ -16,13 +16,13 @@ global.calc.setOptionStyles = () => {
       width: size(320),
       height: size(40),
       lineHeight: size(40),
-//      textAlign: 'center', // textAlignはText側で指定する
-//      verticalAlign: 'middle',
-      justifyContent: 'center', // 縦方向
+      //text-align: 'center',
+      alignItems: 'center', // 横方向アライメント
+      //vertical-align: 'middle',
+      justifyContent: 'center', // 縦方向アライメント
       backgroundColor: '#2196F3',
     },
     spanReturn: {
-      textAlign: 'center', // textAlignはText側で指定する
       fontSize: size(16),
       color: '#FFFFFF',
     },
