@@ -1,10 +1,12 @@
 import './Global.js';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Dimensions, StatusBar, useColorScheme } from 'react-native';
+import { AppState, BackHandler, Dimensions, StatusBar, useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { useEffect } from 'react';
 import CalcFunctionService from './service/CalcFunctionService';
 import CalcNumberService from './service/CalcNumberService';
 import MyFunction from './Function';
+import MyLoading from './Loading';
 import MyNumber from './Number';
 import MyOption from './Option';
 
@@ -154,14 +156,39 @@ function App() {
   const window = Dimensions.get('window');
   global.app.viewWidth = window.width;
   global.app.viewHeight = window.height - StatusBar.currentHeight;
+  global.calc.setLoadingStyles();
   global.calc.setNumberStyles();
   global.calc.setFunctionStyles();
   global.calc.setOptionStyles();
 
-  // グローバルデータとサービス
-  global.calc.init();
+  // サービス
   global.calcNumberService = new MyCalcNumberService();
   global.calcFunctionService = new MyCalcFunctionService();
+
+  useEffect(() => {
+    // アプリの状態
+    const handleAppStateChange = (appState) => {
+      if (appState == 'background') {
+        console.log("handleAppStateChange background");
+      } else if (appState == 'active') {
+        console.log("handleAppStateChange active");
+      }
+    };
+    AppState.addEventListener('change', handleAppStateChange );
+
+    // 端末の「戻る」ボタン
+    const backAction = () => {
+      console.log("backAction");
+      BackHandler.exitApp();
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => {
+      AppState.removeEventListener('change', handleAppStateChange );
+      backHandler.remove();
+    };
+  }, []);
 
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -171,7 +198,8 @@ function App() {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={isDarkMode ? '#000000' : '#FFFFFF'}
       />
-      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Number'>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Loading'>
+        <Stack.Screen name='Loading' component={MyLoading} />
         <Stack.Screen name='Number' component={MyNumber} />
         <Stack.Screen name='Function' component={MyFunction} />
         <Stack.Screen name='Option' component={MyOption} />

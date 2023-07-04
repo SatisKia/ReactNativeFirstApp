@@ -123,11 +123,7 @@ class MyOption extends React.Component {
     const { italicFlag, separatorType } = this.state;
 
     return (
-      <PaperProvider
-        settings={{
-          rippleEffectEnabled: false
-        }}
-      >
+      <PaperProvider settings={{ rippleEffectEnabled: false }}>
         <View style={global.calc.optionStyles.body}>
           <TouchableOpacity style={global.calc.optionStyles.divReturn} onPress={() => {
             if (this.returnScreen == 'Number') {
@@ -136,7 +132,8 @@ class MyOption extends React.Component {
             if (this.returnScreen == 'Function') {
               global.calcFunctionService.init();
             }
-            this.props.navigation.navigate(this.returnScreen);
+//            this.props.navigation.navigate(this.returnScreen);
+            this.props.navigation.goBack();
           }}>
             <Text style={global.calc.optionStyles.spanReturn}>{strBack}</Text>
           </TouchableOpacity>
