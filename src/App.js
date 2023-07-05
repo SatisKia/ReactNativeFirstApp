@@ -1,10 +1,11 @@
 import './Global.js';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AppState, BackHandler, Dimensions, StatusBar, useColorScheme } from 'react-native';
+import { AppState, BackHandler, Button, Dimensions, StatusBar, Text, useColorScheme, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import CalcFunctionService from './service/CalcFunctionService';
 import CalcNumberService from './service/CalcNumberService';
+import Modal from "react-native-modal";
 import MyFunction from './Function';
 import MyLoading from './Loading';
 import MyNumber from './Number';
@@ -160,10 +161,13 @@ function App() {
   global.calc.setNumberStyles();
   global.calc.setFunctionStyles();
   global.calc.setOptionStyles();
+  const size = global.app.size;
 
   // サービス
   global.calcNumberService = new MyCalcNumberService();
   global.calcFunctionService = new MyCalcFunctionService();
+
+  const [ modalShowFlag, setModalShowFlag ] = useState(false);
 
   useEffect(() => {
     // アプリの状態
@@ -174,18 +178,18 @@ function App() {
         console.log("handleAppStateChange active");
       }
     };
-    AppState.addEventListener('change', handleAppStateChange );
+    const appStateHandler = AppState.addEventListener('change', handleAppStateChange );
 
     // 端末の「戻る」ボタン
     const backAction = () => {
       console.log("backAction");
-      BackHandler.exitApp();
+      setModalShowFlag(true);
       return true;
     };
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 
     return () => {
-      AppState.removeEventListener('change', handleAppStateChange );
+      appStateHandler.remove();
       backHandler.remove();
     };
   }, []);
@@ -204,6 +208,49 @@ function App() {
         <Stack.Screen name='Function' component={MyFunction} />
         <Stack.Screen name='Option' component={MyOption} />
       </Stack.Navigator>
+      <Modal
+        isVisible={modalShowFlag}
+        backdropColor="#000000"
+        backdropOpacity={0.5}
+        onBackdropPress={() => { setModalShowFlag(false); }}
+      >
+        <View style={{
+          width: '96%',
+          top: '50%',
+          left: '2%',
+          right: 'auto',
+          bottom: 'auto',
+          transform: [
+            { translateY: -global.app.viewHeight / 2 },
+          ],
+          borderRadius: size(4),
+          paddingTop: size(20),
+          paddingBottom: size(10),
+          alignItems: 'center',
+          backgroundColor: "#ffffff",
+        }}>
+          <Text style={{ fontSize: size(15), fontWeight: 'bold' }}>アプリ終了</Text>
+          <Text />
+          <Text style={{ fontSize: size(15) }}>アプリを終了してもよろしいですか？</Text>
+          <Text />
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ width: size(100), padding: size(10) }}>
+              <Button
+                title="いいえ"
+                titleStyle={{ fontSize: size(15) }}
+                onPress={() => { setModalShowFlag(false); }}
+              />
+            </View>
+            <View style={{ width: size(100), padding: size(10) }}>
+              <Button
+                title="はい"
+                titleStyle={{ fontSize: size(15) }}
+                onPress={() => { BackHandler.exitApp(); }}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </NavigationContainer>
   );
 }
