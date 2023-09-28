@@ -1,7 +1,46 @@
 import { getLocales } from "react-native-localize";
 import MyAsyncStorage from './service/AsyncStorage.js';
 
+function hashCode(str) {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = hash * 31 + str.charCodeAt(i);
+    hash |= 0; // 符号付き32bit整数にする
+  }
+  return hash;
+}
+
 global.app = {};
+
+global.app.init = async () => {
+  let storage = new MyAsyncStorage();
+
+  // バックグラウンド画像
+  global.app.imageFlag = await storage.getBool("imageFlag", false);
+  global.app.imageUrl = await storage.getValue("imageUrl", "");
+  global.app.imageTempUrl = await storage.getValue("imageTempUrl", "");
+  global.app.imageCropUrl = await storage.getValue("imageCropUrl", "");
+  let _hashCode = hashCode(global.app.imageUrl);
+console.log(global.app.imageUrl + " " + _hashCode);
+  global.app.imageX = await storage.getNumber("imageX_" + _hashCode, 50);
+  global.app.imageY = await storage.getNumber("imageY_" + _hashCode, 50);
+};
+global.app.reload = async () => {
+  let storage = new MyAsyncStorage();
+  let _hashCode = hashCode(global.app.imageUrl);
+  global.app.imageX = await storage.getNumber("imageX_" + _hashCode, 50);
+  global.app.imageY = await storage.getNumber("imageY_" + _hashCode, 50);
+}
+global.app.save = async () => {
+  let storage = new MyAsyncStorage();
+  await storage.setBool("imageFlag", global.app.imageFlag);
+  await storage.setValue("imageUrl", global.app.imageUrl);
+  await storage.setValue("imageTempUrl", global.app.imageTempUrl);
+  await storage.setValue("imageCropUrl", global.app.imageCropUrl);
+  let _hashCode = hashCode(global.app.imageUrl);
+  await storage.setNumber("imageX_" + _hashCode, global.app.imageX);
+  await storage.setNumber("imageY_" + _hashCode, global.app.imageY);
+};
 
 // アプリの仮想幅
 global.app.contentWidth = 320;

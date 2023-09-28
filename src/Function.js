@@ -1,10 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 
 global.calc.setFunctionStyles = () => {
   const height = global.app.getContentHeight() - 20 - 50 - 20; // 計算結果等の表示欄の高さを引いた分
-  const buttonHeight1 = height * 3 / 23;
-  const buttonHeight2 = height * 4 / 23;
+  const buttonHeight1 = Math.floor(height * 3 / 23);
+  const buttonHeight2 = Math.floor(height * 4 / 23);
   const remainder = height - buttonHeight1 - buttonHeight2 * 5;
   const buttonHeight3 = buttonHeight2 + remainder;
   const size = global.app.size;
@@ -20,7 +20,6 @@ global.calc.setFunctionStyles = () => {
       lineHeight: size(20),
       //text-align: 'left',
       alignItems: 'flex-start', // 横方向アライメント
-      backgroundColor: '#E0E0E0',
     },
     spanLog1: {
       fontSize: size(17),
@@ -32,7 +31,6 @@ global.calc.setFunctionStyles = () => {
       lineHeight: size(50),
       //text-align: 'right',
       alignItems: 'flex-end', // 横方向アライメント
-      backgroundColor: '#E0E0E0',
     },
     spanLog2: {
       fontSize: size(29),
@@ -82,6 +80,9 @@ global.calc.setFunctionStyles = () => {
       width: size(106),
     },
 
+    divLogColor: {
+      backgroundColor: '#E0E0E0',
+    },
     divColorBlue: {
       backgroundColor: '#C0C0FF',
     },
@@ -90,6 +91,19 @@ global.calc.setFunctionStyles = () => {
     },
     divColorWhite: {
       backgroundColor: '#FFFFFF',
+    },
+
+    divLogColorT: {
+      backgroundColor: '#E0E0E07F',
+    },
+    divColorBlueT: {
+      backgroundColor: '#C0C0FF7F',
+    },
+    divColorRedT: {
+      backgroundColor: '#FFA0A07F',
+    },
+    divColorWhiteT: {
+      backgroundColor: '#FFFFFF7F',
     },
 
     spanColorBlack: {
@@ -197,26 +211,26 @@ class MyFunctionA extends React.Component {
 
     return (
       <View>
-        <TouchableOpacity activeOpacity={1.0} style={global.calc.functionStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
+        <TouchableOpacity activeOpacity={1.0} style={[global.calc.functionStyles.divLog1, global.app.imageFlag ? global.calc.functionStyles.divLogColorT : global.calc.functionStyles.divLogColor]} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
           <Text style={global.calc.functionStyles.spanLog1}>{this.state.dispAngle}</Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={1.0} style={global.calc.functionStyles.divLog2} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
+        <TouchableOpacity activeOpacity={1.0} style={[global.calc.functionStyles.divLog2, global.app.imageFlag ? global.calc.functionStyles.divLogColorT : global.calc.functionStyles.divLogColor]} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
           <Text style={global.calc.italicFlag ? global.calc.functionStyles.spanLog2Italic : global.calc.functionStyles.spanLog2}>{dispStr}</Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={1.0} style={global.calc.functionStyles.divLog1} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
+        <TouchableOpacity activeOpacity={1.0} style={[global.calc.functionStyles.divLog1, global.app.imageFlag ? global.calc.functionStyles.divLogColorT : global.calc.functionStyles.divLogColor]} onPress={() => { this.props.navigation.navigate("Option", { returnScreen: "Function" }); }}>
           <Text style={global.calc.functionStyles.spanLog1}>M = {this.state.dispMemory}</Text>
         </TouchableOpacity>
         <View style={global.calc.functionStyles.divRow}>
-          <TouchableOpacity style={[global.calc.functionStyles.button1, global.calc.functionStyles.divColorBlue]} onPress={this.onButtonMAdd}>
+          <TouchableOpacity style={[global.calc.functionStyles.button1, global.app.imageFlag ? global.calc.functionStyles.divColorBlueT : global.calc.functionStyles.divColorBlue]} onPress={this.onButtonMAdd}>
             <Text style={[global.calc.functionStyles.spanFont25, global.calc.functionStyles.spanColorBlack]}>M+</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button1, global.calc.functionStyles.divColorBlue]} onPress={this.onButtonMSub}>
+          <TouchableOpacity style={[global.calc.functionStyles.button1, global.app.imageFlag ? global.calc.functionStyles.divColorBlueT : global.calc.functionStyles.divColorBlue]} onPress={this.onButtonMSub}>
             <Text style={[global.calc.functionStyles.spanFont25, global.calc.functionStyles.spanColorBlack]}>M-</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button1, global.calc.functionStyles.divColorBlue]} onPress={this.onButtonMRC}>
+          <TouchableOpacity style={[global.calc.functionStyles.button1, global.app.imageFlag ? global.calc.functionStyles.divColorBlueT : global.calc.functionStyles.divColorBlue]} onPress={this.onButtonMRC}>
             <Text style={[global.calc.functionStyles.spanFont25, global.calc.memoryRecalled ? global.calc.functionStyles.spanColorRed : global.calc.functionStyles.spanColorBlack]}>{this.state.mrcButtonText}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button1, global.calc.functionStyles.divColorRed]} onPress={this.onButtonNumber}>
+          <TouchableOpacity style={[global.calc.functionStyles.button1, global.app.imageFlag ? global.calc.functionStyles.divColorRedT : global.calc.functionStyles.divColorRed]} onPress={this.onButtonNumber}>
             <Text style={[global.calc.functionStyles.spanFont25, global.calc.functionStyles.spanColorWhite]}>NUM</Text>
           </TouchableOpacity>
         </View>
@@ -299,8 +313,14 @@ class MyFunctionB extends React.Component {
   render() {
     console.log("MyFunctionB render");
 
-    const styleDivCe = [ global.calc.functionStyles.button2, global.calc.errorFlag ? global.calc.functionStyles.divColorRed : global.calc.functionStyles.divColorWhite ];
-    const styleSpanCe = [ global.calc.functionStyles.spanFont32, global.calc.errorFlag ? global.calc.functionStyles.spanColorWhite : global.calc.functionStyles.spanColorRed ];
+    const styleDivCe = [ global.calc.functionStyles.button2, global.calc.errorFlag ?
+      (global.app.imageFlag ? global.calc.functionStyles.divColorRedT   : global.calc.functionStyles.divColorRed  ) :
+      (global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite)
+    ];
+    const styleSpanCe = [ global.calc.functionStyles.spanFont32, global.calc.errorFlag ?
+      global.calc.functionStyles.spanColorWhite :
+      global.calc.functionStyles.spanColorRed
+    ];
 
     return (
       <View>
@@ -311,10 +331,10 @@ class MyFunctionB extends React.Component {
           <TouchableOpacity style={styleDivCe} onPress={this.onButtonC}>
             <Text style={styleSpanCe}>C</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonAngle}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonAngle}>
             <Text style={[global.calc.functionStyles.spanFont25, global.calc.functionStyles.spanColorBlack]}>{this.state.angleButtonText}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonSqrt}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonSqrt}>
             <Text style={[global.calc.functionStyles.spanFont40, global.calc.functionStyles.spanColorBlack]}>√</Text>
           </TouchableOpacity>
         </View>
@@ -411,46 +431,46 @@ class MyFunctionC extends React.Component {
     return (
       <View>
         <View style={global.calc.functionStyles.divRow}>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonSin}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonSin}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>sin</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonCos}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonCos}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>cos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonTan}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func2, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonTan}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>tan</Text>
           </TouchableOpacity>
         </View>
         <View style={global.calc.functionStyles.divRow}>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonArcSin}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonArcSin}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>asin</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonArcCos}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonArcCos}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>acos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonArcTan}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func2, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonArcTan}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>atan</Text>
           </TouchableOpacity>
         </View>
         <View style={global.calc.functionStyles.divRow}>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonLog}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonLog}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>ln</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonLog10}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func1, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonLog10}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>log</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonSqr}>
+          <TouchableOpacity style={[global.calc.functionStyles.button2, global.calc.functionStyles.func2, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonSqr}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>sqr</Text>
           </TouchableOpacity>
         </View>
         <View style={global.calc.functionStyles.divRow}>
-          <TouchableOpacity style={[global.calc.functionStyles.button3, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonExp}>
+          <TouchableOpacity style={[global.calc.functionStyles.button3, global.calc.functionStyles.func1, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonExp}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>exp</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button3, global.calc.functionStyles.func1, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonExp10}>
+          <TouchableOpacity style={[global.calc.functionStyles.button3, global.calc.functionStyles.func1, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonExp10}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>exp10</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[global.calc.functionStyles.button3, global.calc.functionStyles.func2, global.calc.functionStyles.divColorWhite]} onPress={this.onButtonInt}>
+          <TouchableOpacity style={[global.calc.functionStyles.button3, global.calc.functionStyles.func2, global.app.imageFlag ? global.calc.functionStyles.divColorWhiteT : global.calc.functionStyles.divColorWhite]} onPress={this.onButtonInt}>
             <Text style={[global.calc.functionStyles.spanFont32, global.calc.functionStyles.spanColorBlack]}>int</Text>
           </TouchableOpacity>
         </View>
@@ -472,6 +492,11 @@ class MyFunction extends React.Component {
     console.log("MyFunction constructor");
     super(props);
 
+    this.state = {
+      imageFlag: global.app.imageFlag,
+      imageCropUrl: global.app.imageCropUrl
+    };
+
     this.setMyFunctionA = this.setMyFunctionA.bind(this);
     this.setMyFunctionB = this.setMyFunctionB.bind(this);
   }
@@ -486,11 +511,11 @@ class MyFunction extends React.Component {
   render() {
     console.log("MyFunction render");
     return (
-      <View style={global.calc.functionStyles.body}>
+      <ImageBackground fadeDuration={0} source={{ uri: global.app.imageFlag ? global.app.imageCropUrl : "" }} style={global.calc.functionStyles.body}>
         <MyFunctionA navigation={this.props.navigation} setMyFunctionA={this.setMyFunctionA} />
         <MyFunctionB navigation={this.props.navigation} setMyFunctionB={this.setMyFunctionB} />
         <MyFunctionC />
-      </View>
+      </ImageBackground>
     );
   }
 
@@ -498,10 +523,19 @@ class MyFunction extends React.Component {
     console.log("MyFunction componentDidMount");
 
     global.calcFunctionService.initWithComponent(this.myFunctionA, this.myFunctionB);
+
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+console.log("MyFunction focus");
+      if (this.state.imageFlag != global.app.imageFlag || this.state.imageCropUrl != global.app.imageCropUrl) {
+        this.setState({ imageFlag: global.app.imageFlag, imageCropUrl: global.app.imageCropUrl });
+      }
+    });
   }
 
   componentWillUnmount() {
     console.log("MyFunction componentWillUnmount");
+
+    this._unsubscribe();
   }
 }
 

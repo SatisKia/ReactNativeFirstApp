@@ -29,8 +29,10 @@ class MyLoading extends React.Component {
     console.log("MyLoading componentDidMount");
 
     // グローバルデータ
-    global.calc.init().then(() => {
-      this.props.navigation.navigate("Number");
+    global.app.init().then(() => {
+      global.calc.init().then(() => {
+        this.props.navigation.navigate("Number");
+      });
     });
   }
 
