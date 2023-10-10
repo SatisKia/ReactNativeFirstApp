@@ -512,7 +512,7 @@ class MyNumber extends React.Component {
   render() {
     console.log("MyNumber render");
     return (
-      <ImageBackground fadeDuration={0} source={{ uri: global.app.imageFlag ? global.app.imageCropUrl : "" }} style={global.calc.numberStyles.body}>
+      <ImageBackground fadeDuration={0} source={global.app.imageFlag ? { uri: global.app.imageCropUrl } : require('./img/dummy.png')} style={global.calc.numberStyles.body}>
         <MyNumberA navigation={this.props.navigation} setMyNumberA={this.setMyNumberA} />
         <MyNumberB navigation={this.props.navigation} setMyNumberB={this.setMyNumberB} />
         <MyNumberC />

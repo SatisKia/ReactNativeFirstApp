@@ -202,6 +202,9 @@ class MyOption extends React.Component {
             this.setState({ imageFlag: global.app.imageFlag, imageCropUrl: global.app.imageCropUrl });
           }
         );
+      },
+      () => {
+        console.log("fetchImage error");
       }
     );
   }
@@ -297,7 +300,7 @@ class MyOption extends React.Component {
     const size = global.app.size;
     return (
       <PaperProvider settings={{ rippleEffectEnabled: false }}>
-        <ImageBackground fadeDuration={0} source={{ uri: imageFlag ? imageCropUrl : "" }} style={global.calc.optionStyles.body}>
+        <ImageBackground fadeDuration={0} source={imageFlag ? { uri: imageCropUrl } : require('./img/dummy.png')} style={global.calc.optionStyles.body}>
           <TouchableOpacity style={global.calc.optionStyles.divReturn} onPress={this.back}>
             <Text style={global.calc.optionStyles.spanReturn}>{strBack}</Text>
           </TouchableOpacity>

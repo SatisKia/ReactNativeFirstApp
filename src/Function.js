@@ -511,7 +511,7 @@ class MyFunction extends React.Component {
   render() {
     console.log("MyFunction render");
     return (
-      <ImageBackground fadeDuration={0} source={{ uri: global.app.imageFlag ? global.app.imageCropUrl : "" }} style={global.calc.functionStyles.body}>
+      <ImageBackground fadeDuration={0} source={global.app.imageFlag ? { uri: global.app.imageCropUrl } : require('./img/dummy.png')} style={global.calc.functionStyles.body}>
         <MyFunctionA navigation={this.props.navigation} setMyFunctionA={this.setMyFunctionA} />
         <MyFunctionB navigation={this.props.navigation} setMyFunctionB={this.setMyFunctionB} />
         <MyFunctionC />
