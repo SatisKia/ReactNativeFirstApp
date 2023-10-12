@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import React from 'react';
 
 global.calc.setLoadingStyles = () => {
@@ -7,6 +7,7 @@ global.calc.setLoadingStyles = () => {
     body: {
       width: size(320),
       height: global.app.viewHeight,
+      justifyContent: 'center',
     },
   });
 };
@@ -21,6 +22,7 @@ class MyLoading extends React.Component {
     console.log("MyLoading render");
     return (
       <View style={global.calc.loadingStyles.body}>
+        <ActivityIndicator size="large" color="#999999" />
       </View>
     );
   }
