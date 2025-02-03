@@ -161,4 +161,4 @@ global.calc.isEnglish = () => {
   const locales = getLocales();
   const languageCode = locales[0].languageCode;
   return languageCode === "en";
-}
+};
