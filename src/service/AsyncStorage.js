@@ -12,10 +12,10 @@ class MyAsyncStorage {
     return defValue;
   };
   getNumber = async (key, defValue) => {
-    return Number(await this.getValue(key, defValue));
+    return Number(await this.getValue(key, String(defValue)));
   };
   getBool = async (key, defValue) => {
-    return Number(await this.getValue(key, defValue)) !== 0;
+    return Number(await this.getValue(key, defValue ? "1" : "0")) !== 0;
   };
 
   setValue = async (key, value) => {
